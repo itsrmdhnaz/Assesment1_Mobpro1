@@ -8,8 +8,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.d3if3026.assesment1.model.UserModel
-import org.d3if3026.assesment1.screen.AboutScreen
-import org.d3if3026.assesment1.screen.LoginScreen
 import org.d3if3026.assesment1.screen.MainScreen
 
 
@@ -18,16 +16,13 @@ import org.d3if3026.assesment1.screen.MainScreen
 fun SetupNavGraph(navController: NavHostController = rememberNavController(), userModel: UserModel = UserModel()) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Login.route
+        startDestination = Screen.Home.route
     ) {
-        composable(route = Screen.Login.route){
-            LoginScreen(navController, userModel)
-        }
         composable(route = Screen.Home.route){
-            MainScreen(navController, userModel)
+            MainScreen(navController, UserModel())
         }
         composable(route = Screen.About.route){
-            AboutScreen(navController, userModel)
+//            AboutScreen(navController)
         }
     }
 }
