@@ -53,10 +53,10 @@ fun AboutScreen(navController: NavHostController, userModel: UserModel) {
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                        Image(
-                            painter = painterResource(id = R.drawable.logo),
-                            contentDescription = "Logo"
-                        )
+                    Image(
+                        painter = painterResource(id = R.drawable.logo),
+                        contentDescription = "Logo"
+                    )
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = Color(0xFFECEBEB),

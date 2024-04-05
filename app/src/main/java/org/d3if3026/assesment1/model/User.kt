@@ -15,7 +15,6 @@ data class Transaction(
     val id: UUID,
     val amount: Float,
     val date: LocalDate,
-    val transactionDescription: String,
     val transferTo: String? = null,
 )
 
