@@ -32,8 +32,12 @@ fun LoginTextField(
         onValueChange = onValueChange,
         modifier = modifier.fillMaxWidth(),
         label = label,
-        leadingIcon = if (leadingIcon != null) { { leadingIcon() } } else null,
-        trailingIcon = if (trailingIcon != null) { { trailingIcon() } } else null,
+        leadingIcon = if (leadingIcon != null) {
+            { leadingIcon() }
+        } else null,
+        trailingIcon = if (trailingIcon != null) {
+            { trailingIcon() }
+        } else null,
         supportingText = supportingText,
         isError = isError,
         visualTransformation = visualTransformation,

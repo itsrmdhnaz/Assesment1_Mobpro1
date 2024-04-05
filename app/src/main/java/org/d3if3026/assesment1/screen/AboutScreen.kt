@@ -97,9 +97,24 @@ fun AboutScreen(navController: NavHostController, userModel: UserModel) {
                     modifier = Modifier.weight(1f)
                 )
                 Column(Modifier.weight(1f)) {
-                    Text(text = auth.value?.user?.let { stringResource(R.string.id_profile, it.id.toString()) } ?: "", style = MaterialTheme.typography.bodySmall)
-                    Text(text = auth.value?.user?.let { stringResource(R.string.username_profile, it.username) } ?: "")
-                    Text(text = auth.value?.user?.let { stringResource(R.string.currency_profile, it.currency) } ?: "")
+                    Text(text = auth.value?.user?.let {
+                        stringResource(
+                            R.string.id_profile,
+                            it.id.toString()
+                        )
+                    } ?: "", style = MaterialTheme.typography.bodySmall)
+                    Text(text = auth.value?.user?.let {
+                        stringResource(
+                            R.string.username_profile,
+                            it.username
+                        )
+                    } ?: "")
+                    Text(text = auth.value?.user?.let {
+                        stringResource(
+                            R.string.currency_profile,
+                            it.currency
+                        )
+                    } ?: "")
                 }
             }
 
@@ -145,6 +160,6 @@ fun AboutScreen(navController: NavHostController, userModel: UserModel) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview(showBackground = true)
 @Composable
-fun PrevAbout(){
+fun PrevAbout() {
     AboutScreen(navController = rememberNavController(), userModel = UserModel())
 }

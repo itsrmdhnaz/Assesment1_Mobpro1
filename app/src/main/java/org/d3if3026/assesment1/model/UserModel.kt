@@ -11,7 +11,7 @@ import java.util.Locale
 import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
-class UserModel : ViewModel(){
+class UserModel : ViewModel() {
     private val _data = MutableLiveData<List<User>>()
     private val data: LiveData<List<User>> = _data
     private val _auth = MutableLiveData<Auth?>()
@@ -53,16 +53,20 @@ class UserModel : ViewModel(){
     fun getTotalIncome(): String? {
         val currentUser = _auth.value?.user ?: return ""
         return auth.value?.user?.let { it ->
-            formatCurrency(currentUser.transaction.filter { it.amount > 0 }.sumOf { it.amount.toDouble() }.toFloat(), it.currency,
-                Locale(Locale.getDefault().language, Locale.getDefault().language))
+            formatCurrency(currentUser.transaction.filter { it.amount > 0 }
+                .sumOf { it.amount.toDouble() }.toFloat(), it.currency,
+                Locale(Locale.getDefault().language, Locale.getDefault().language)
+            )
         }
     }
 
     fun getTotalOutcome(): String? {
         val currentUser = _auth.value?.user ?: return ""
         return auth.value?.user?.let { it ->
-            formatCurrency(currentUser.transaction.filter { it.amount < 0 }.sumOf { it.amount.toDouble() }.toFloat(), it.currency,
-                Locale(Locale.getDefault().language, Locale.getDefault().language))
+            formatCurrency(currentUser.transaction.filter { it.amount < 0 }
+                .sumOf { it.amount.toDouble() }.toFloat(), it.currency,
+                Locale(Locale.getDefault().language, Locale.getDefault().language)
+            )
         }
     }
 
@@ -75,17 +79,19 @@ class UserModel : ViewModel(){
         val sender = _data.value.orEmpty().find { it.username == senderUsername.lowercase() }
         val receiver = _data.value.orEmpty().find { it.username == receiverUsername.lowercase() }
 
-        if(senderUsername.lowercase() == receiverUsername.lowercase()){
+        if (senderUsername.lowercase() == receiverUsername.lowercase()) {
             return false
         }
 
         if (sender != null && receiver != null) {
             val convertedAmount = convertCurrency(sender.currency, receiver.currency, amount)
 
-            val transactionSender = Transaction(UUID.randomUUID(), amount * -1, LocalDate.now(),
+            val transactionSender = Transaction(
+                UUID.randomUUID(), amount * -1, LocalDate.now(),
                 receiver.username
             )
-            val transactionReceiver = Transaction(UUID.randomUUID(), convertedAmount, LocalDate.now(),
+            val transactionReceiver = Transaction(
+                UUID.randomUUID(), convertedAmount, LocalDate.now(),
                 sender.username
             )
 
@@ -117,7 +123,7 @@ fun convertCurrency(
     toCurrency: String,
     amount: Float
 ): Float {
-    val usdToIdr = 15000.0f
+    val usdToIdr = 15500.0f
     val eurToIdr = 17000.0f
     val gbpToIdr = 20000.0f
 
@@ -139,6 +145,7 @@ fun convertCurrency(
                 amountInIdr / usdToIdr
             }
         }
+
         "EUR" -> {
             if (fromCurrency == "IDR") {
                 amount / eurToIdr
@@ -146,6 +153,7 @@ fun convertCurrency(
                 amountInIdr / eurToIdr
             }
         }
+
         "GBP" -> {
             if (fromCurrency == "IDR") {
                 amount / gbpToIdr
@@ -153,10 +161,12 @@ fun convertCurrency(
                 amountInIdr / gbpToIdr
             }
         }
+
         "IDR" -> amountInIdr
         else -> 0f
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 fun getDataDummy(): List<User> {
     val password = "6706223026"
@@ -166,7 +176,12 @@ fun getDataDummy(): List<User> {
             username = "rmdhnaz",
             password = password,
             transaction = List(10) { index ->
-                Transaction(UUID.randomUUID(), (index + 1) * 100.0f, LocalDate.now(), "Transaction ${index + 1}")
+                Transaction(
+                    UUID.randomUUID(),
+                    (index + 1) * 100.0f,
+                    LocalDate.now(),
+                    "Transaction ${index + 1}"
+                )
             },
             currency = "IDR"
         ),
@@ -175,7 +190,12 @@ fun getDataDummy(): List<User> {
             username = "itsme",
             password = password,
             transaction = List(10) { index ->
-                Transaction(UUID.randomUUID(), (index + 1) * 200.0f, LocalDate.now(), "Transaction ${index + 1}")
+                Transaction(
+                    UUID.randomUUID(),
+                    (index + 1) * 200.0f,
+                    LocalDate.now(),
+                    "Transaction ${index + 1}"
+                )
             },
             currency = "EUR"
         ),
@@ -184,7 +204,12 @@ fun getDataDummy(): List<User> {
             username = "admin",
             password = password,
             transaction = List(10) { index ->
-                Transaction(UUID.randomUUID(), (index + 1) * 300.0f, LocalDate.now(), "Transaction ${index + 1}")
+                Transaction(
+                    UUID.randomUUID(),
+                    (index + 1) * 300.0f,
+                    LocalDate.now(),
+                    "Transaction ${index + 1}"
+                )
             },
             currency = "GBP"
         ),
@@ -193,7 +218,12 @@ fun getDataDummy(): List<User> {
             username = "Mobpro",
             password = password,
             transaction = List(10) { index ->
-                Transaction(UUID.randomUUID(), (index + 1) * 300.0f, LocalDate.now(), "Transaction ${index + 1}")
+                Transaction(
+                    UUID.randomUUID(),
+                    (index + 1) * 300.0f,
+                    LocalDate.now(),
+                    "Transaction ${index + 1}"
+                )
             },
             currency = "USD"
         )

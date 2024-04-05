@@ -147,14 +147,20 @@ fun LoginScreen(navController: NavHostController, userModel: UserModel) {
                     IconButton(onClick = {
                         peekPass = !peekPass
                     }) {
-                        if(peekPass){
-                            Icon(imageVector = Icons.Default.ArrowDropDownCircle, contentDescription = "")
-                        } else   Icon(imageVector = Icons.Default.RemoveRedEye, contentDescription = "")
+                        if (peekPass) {
+                            Icon(
+                                imageVector = Icons.Default.ArrowDropDownCircle,
+                                contentDescription = ""
+                            )
+                        } else Icon(
+                            imageVector = Icons.Default.RemoveRedEye,
+                            contentDescription = ""
+                        )
                     }
                 })
             },
             isError = passwordError,
-            visualTransformation = if(peekPass) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (peekPass) VisualTransformation.None else PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Text,
                 capitalization = KeyboardCapitalization.None,
@@ -165,19 +171,24 @@ fun LoginScreen(navController: NavHostController, userModel: UserModel) {
             onClick = {
                 usernameError = (username == "" || username == "0")
                 passwordError = (password == "" || password == "0")
-                if(usernameError || passwordError) return@Button
+                if (usernameError || passwordError) return@Button
                 val success = userModel.login(username, password)
-                if(success != null){
-                    navController.navigate(route = "home"){
-                        popUpTo("login"){
+                if (success != null) {
+                    navController.navigate(route = "home") {
+                        popUpTo("login") {
                             inclusive = true
                         }
                     }
-                    Toast.makeText(context,
-                        context.getString(R.string.berhasil_login_halo, success.username), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.berhasil_login_halo, success.username),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
-                    Toast.makeText(context,
-                        context.getString(R.string.username_atau_password_salah), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.username_atau_password_salah), Toast.LENGTH_SHORT
+                    ).show()
                 }
             },
             modifier = Modifier.width(130.dp),

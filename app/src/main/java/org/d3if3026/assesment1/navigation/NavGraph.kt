@@ -15,18 +15,21 @@ import org.d3if3026.assesment1.screen.MainScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SetupNavGraph(navController: NavHostController = rememberNavController(), userModel: UserModel = UserModel()) {
+fun SetupNavGraph(
+    navController: NavHostController = rememberNavController(),
+    userModel: UserModel = UserModel()
+) {
     NavHost(
         navController = navController,
         startDestination = Screen.Login.route
     ) {
-        composable(route = Screen.Login.route){
+        composable(route = Screen.Login.route) {
             LoginScreen(navController, userModel)
         }
-        composable(route = Screen.Home.route){
+        composable(route = Screen.Home.route) {
             MainScreen(navController, userModel)
         }
-        composable(route = Screen.About.route){
+        composable(route = Screen.About.route) {
             AboutScreen(navController, userModel)
         }
     }

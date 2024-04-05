@@ -127,11 +127,15 @@ fun MainScreen(navController: NavHostController, userModel: UserModel) {
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(route = "login"){
-                            popUpTo("home"){inclusive = true}
+                        navController.navigate(route = "login") {
+                            popUpTo("home") { inclusive = true }
                         }
                         userModel.logout()
-                        Toast.makeText(context, context.getString(R.string.berhasil_melakukan_logout), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.berhasil_melakukan_logout),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
@@ -219,7 +223,11 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                 verticalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = formatCurrency(userModel.getTotalAmount(), userModel.getCurrencyAuth(), Locale(Locale.getDefault().language, Locale.getDefault().country)),
+                    text = formatCurrency(
+                        userModel.getTotalAmount(),
+                        userModel.getCurrencyAuth(),
+                        Locale(Locale.getDefault().language, Locale.getDefault().country)
+                    ),
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Medium,
                     modifier = Modifier.align(Alignment.End),
@@ -237,7 +245,8 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                 modifier = Modifier.weight(1f)
             )
             Text(
-                text = userModel.getTotalOutcome()?.let { stringResource(R.string.`out`, it) } ?: "",
+                text = userModel.getTotalOutcome()?.let { stringResource(R.string.`out`, it) }
+                    ?: "",
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.End
@@ -337,15 +346,20 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                     onValueChange = {
                         value = it
                         valueError = (value == "" || value == "0")
-                        if(valueError) return@OutlinedTextField
-                        result = convertCurrency(selectedFromCurrency, selectedToCurrency, value.toFloat())
+                        if (valueError) return@OutlinedTextField
+                        result = convertCurrency(
+                            selectedFromCurrency,
+                            selectedToCurrency,
+                            value.toFloat()
+                        )
                     },
                     modifier = Modifier
                         .weight(1f),
                     placeholder = { Text(text = stringResource(R.string.amount)) },
                     leadingIcon = {
                         Text(
-                            text =  Currency.getInstance(selectedFromCurrency).symbol, fontSize = 15.sp
+                            text = Currency.getInstance(selectedFromCurrency).symbol,
+                            fontSize = 15.sp
                         )
                     },
                     keyboardOptions = KeyboardOptions.Default.copy(
@@ -357,9 +371,23 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                     ),
                     trailingIcon = {
                         IconPicker(isError = valueError, unit = {
-                            if(result != 0f){
+                            if (result != 0f) {
                                 IconButton(onClick = {
-                                    shareData(context, context.getString(R.string.share_result, formatCurrency(value.toFloat(), Locale(Locale.getDefault().language, Locale.getDefault().country)), selectedToCurrency, result.toString()))
+                                    shareData(
+                                        context,
+                                        context.getString(
+                                            R.string.share_result,
+                                            formatCurrency(
+                                                value.toFloat(),
+                                                Locale(
+                                                    Locale.getDefault().language,
+                                                    Locale.getDefault().country
+                                                )
+                                            ),
+                                            selectedToCurrency,
+                                            result.toString()
+                                        )
+                                    )
                                 }) {
                                     Icon(imageVector = Icons.Default.Share, contentDescription = "")
                                 }
@@ -404,8 +432,12 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                                         selectedFromCurrency = currency
                                         expandedFromCurrency = false
                                         valueError = (value == "" || value == "0")
-                                        if(valueError) return@DropdownMenuItem
-                                        result = convertCurrency(selectedFromCurrency, selectedToCurrency, value.toFloat())
+                                        if (valueError) return@DropdownMenuItem
+                                        result = convertCurrency(
+                                            selectedFromCurrency,
+                                            selectedToCurrency,
+                                            value.toFloat()
+                                        )
                                     },
                                     enabled = currency != selectedFromCurrency
                                 )
@@ -418,10 +450,18 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                         selectedFromCurrency = selectedToCurrency
                         selectedToCurrency = temp
                         valueError = (value == "" || value == "0")
-                        if(valueError) return@IconButton
-                        result = convertCurrency(selectedFromCurrency, selectedToCurrency, value.toFloat())
+                        if (valueError) return@IconButton
+                        result = convertCurrency(
+                            selectedFromCurrency,
+                            selectedToCurrency,
+                            value.toFloat()
+                        )
                     }) {
-                        Icon(imageVector = Icons.Filled.SwapHoriz, contentDescription = "", modifier = Modifier.weight(1f))
+                        Icon(
+                            imageVector = Icons.Filled.SwapHoriz,
+                            contentDescription = "",
+                            modifier = Modifier.weight(1f)
+                        )
                     }
 
                     ExposedDropdownMenuBox(
@@ -452,8 +492,12 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                                         selectedToCurrency = currency
                                         expandedToCurrency = false
                                         valueError = (value == "" || value == "0")
-                                        if(valueError) return@DropdownMenuItem
-                                        result = convertCurrency(selectedFromCurrency, selectedToCurrency, value.toFloat())
+                                        if (valueError) return@DropdownMenuItem
+                                        result = convertCurrency(
+                                            selectedFromCurrency,
+                                            selectedToCurrency,
+                                            value.toFloat()
+                                        )
                                     },
                                     enabled = currency != selectedToCurrency
                                 )
@@ -462,12 +506,34 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                     }
                 }
                 Text(
-                    text = if(valueError) {
-                        stringResource(R.string.convert, formatCurrency(0f, selectedFromCurrency, Locale(Locale.getDefault().country,Locale.getDefault().country)) )
+                    text = if (valueError) {
+                        stringResource(
+                            R.string.convert,
+                            formatCurrency(
+                                0f,
+                                selectedFromCurrency,
+                                Locale(Locale.getDefault().country, Locale.getDefault().country)
+                            )
+                        )
                     } else {
-                        if(selectedFromCurrency == "IDR"){
-                            stringResource(R.string.convert, "${Currency.getInstance(selectedToCurrency).symbol} ${result.toString().substring(0, if(result.toString().length < 7) result.toString().length else 7)}")
-                        } else stringResource(R.string.convert, formatCurrency(result, selectedFromCurrency, Locale(Locale.getDefault().country,Locale.getDefault().country)))
+                        if (selectedFromCurrency == "IDR") {
+                            stringResource(
+                                R.string.convert,
+                                "${Currency.getInstance(selectedToCurrency).symbol} ${
+                                    result.toString().substring(
+                                        0,
+                                        if (result.toString().length < 7) result.toString().length else 7
+                                    )
+                                }"
+                            )
+                        } else stringResource(
+                            R.string.convert,
+                            formatCurrency(
+                                result,
+                                selectedFromCurrency,
+                                Locale(Locale.getDefault().country, Locale.getDefault().country)
+                            )
+                        )
 
                     },
                     style = MaterialTheme.typography.titleMedium,
@@ -489,10 +555,10 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
                 Column(
                     modifier = Modifier.padding(16.dp)
                 ) {
-                    if (selectMenu == "Transfer"){
+                    if (selectMenu == "Transfer") {
                         TransferMoney(
                             userModel = userModel,
-                            closeBottomSheet =  {
+                            closeBottomSheet = {
                                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                                     if (!sheetState.isVisible) {
                                         showBottomSheet = false
@@ -520,12 +586,13 @@ fun ScreenContent(modifier: Modifier = Modifier, userModel: UserModel) {
 
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RequestLoan(
     userModel: UserModel,
     closeBottomSheet: () -> Unit,
-){
+) {
     var amountLoan by rememberSaveable { mutableStateOf("") }
     var amountLoanError by rememberSaveable { mutableStateOf(false) }
     val focuseRequester by remember {
@@ -547,7 +614,7 @@ fun RequestLoan(
             .padding(horizontal = 24.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
-    ){
+    ) {
         Text(
             text = stringResource(R.string.request_loan),
             style = MaterialTheme.typography.titleMedium,
@@ -573,8 +640,12 @@ fun RequestLoan(
                 placeholder = { Text(text = stringResource(id = R.string.amount)) },
                 leadingIcon = {
                     Text(
-                        text = Currency.getInstance(userModel.auth.value!!.user.currency).getSymbol(Locale(Locale.getDefault().language, Locale.getDefault().country))
-                        , fontSize = 15.sp
+                        text = Currency.getInstance(userModel.auth.value!!.user.currency).getSymbol(
+                            Locale(
+                                Locale.getDefault().language,
+                                Locale.getDefault().country
+                            )
+                        ), fontSize = 15.sp
                     )
                 },
                 keyboardOptions = KeyboardOptions.Default.copy(
@@ -597,7 +668,7 @@ fun RequestLoan(
             IconButton(
                 onClick = {
                     amountLoanError = (amountLoan == "" || amountLoan == "0")
-                    if(amountLoanError) return@IconButton
+                    if (amountLoanError) return@IconButton
                     userModel.getAuthUserId()?.let {
                         userModel.addTransaction(
                             it,
@@ -632,7 +703,7 @@ fun RequestLoan(
 fun TransferMoney(
     userModel: UserModel,
     closeBottomSheet: () -> Unit
-){
+) {
 
     var amountTransfer by rememberSaveable { mutableStateOf("") }
     var amountTransferError by rememberSaveable { mutableStateOf(false) }
@@ -660,7 +731,7 @@ fun TransferMoney(
             .padding(horizontal = 24.dp, vertical = 16.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
-    ){
+    ) {
         Text(
             text = stringResource(R.string.transfer_money),
             style = MaterialTheme.typography.titleMedium,
@@ -712,8 +783,12 @@ fun TransferMoney(
             placeholder = { Text(text = stringResource(id = R.string.amount)) },
             leadingIcon = {
                 Text(
-                    text = Currency.getInstance(userModel.auth.value!!.user.currency).getSymbol(Locale(Locale.getDefault().language, Locale.getDefault().country))
-                    , fontSize = 15.sp
+                    text = Currency.getInstance(userModel.auth.value!!.user.currency).getSymbol(
+                        Locale(
+                            Locale.getDefault().language,
+                            Locale.getDefault().country
+                        )
+                    ), fontSize = 15.sp
                 )
             },
             singleLine = true,
@@ -742,15 +817,23 @@ fun TransferMoney(
             onClick = {
                 amountTransferError = (amountTransfer == "" || amountTransfer == "0")
                 transferToError = (transferTo == "" || transferTo == "0")
-                if(transferTo.lowercase() == userModel.getUsernameAuth()?.lowercase()){
-                    Toast.makeText(context, context.getString(R.string.error_same_name), Toast.LENGTH_SHORT).show()
+                if (transferTo.lowercase() == userModel.getUsernameAuth()?.lowercase()) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.error_same_name),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@IconButton
                 }
-                if(amountTransfer.toFloat() > userModel.getTotalAmount()){
-                    Toast.makeText(context, context.getString(R.string.error_less), Toast.LENGTH_SHORT).show()
+                if (amountTransfer.toFloat() > userModel.getTotalAmount()) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.error_less),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     return@IconButton
                 }
-                if(amountTransferError || transferToError) return@IconButton
+                if (amountTransferError || transferToError) return@IconButton
                 val transferSuccess = userModel.getUsernameAuth()?.let {
                     userModel.transferTo(
                         it,
@@ -759,9 +842,11 @@ fun TransferMoney(
                     )
                 }
 
-                if(transferSuccess == false){
-                    Toast.makeText(context,
-                        context.getString(R.string.username_notfound), Toast.LENGTH_SHORT).show()
+                if (transferSuccess == false) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.username_notfound), Toast.LENGTH_SHORT
+                    ).show()
                     return@IconButton
                 }
                 amountTransfer = ""
@@ -784,7 +869,7 @@ fun TransferMoney(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ListTransaction(user: User, modifier: Modifier = Modifier){
+fun ListTransaction(user: User, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -818,7 +903,7 @@ fun ListTransaction(user: User, modifier: Modifier = Modifier){
 
 
 @Composable
-fun ItemTransaction(index: Int, status: String, amount: Float, currency: String){
+fun ItemTransaction(index: Int, status: String, amount: Float, currency: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -857,7 +942,11 @@ fun ItemTransaction(index: Int, status: String, amount: Float, currency: String)
             verticalArrangement = Arrangement.Center,
         ) {
             Text(
-                text = formatCurrency(amount, currency, Locale(Locale.getDefault().language, Locale.getDefault().country)),
+                text = formatCurrency(
+                    amount,
+                    currency,
+                    Locale(Locale.getDefault().language, Locale.getDefault().country)
+                ),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.End,
                 style = MaterialTheme.typography.labelLarge,
@@ -877,7 +966,7 @@ fun MainScreenPreview() {
 fun formatCurrency(amount: Float, currency: String, locale: Locale): String {
     val formatter = NumberFormat.getCurrencyInstance(locale)
     formatter.currency = Currency.getInstance(currency)
-    return if(amount < 0){
+    return if (amount < 0) {
         "– ${formatter.format(amount.absoluteValue)}"
     } else {
         formatter.format(amount)
@@ -894,8 +983,8 @@ fun formatCurrency(amount: Float, locale: Locale): String {
 }
 
 @Composable
-fun IconPicker(isError: Boolean, unit: @Composable () -> Unit){
-    if(isError){
+fun IconPicker(isError: Boolean, unit: @Composable () -> Unit) {
+    if (isError) {
         Icon(imageVector = Icons.Filled.Warning, contentDescription = null)
     } else {
         unit()
@@ -913,8 +1002,8 @@ private fun shareData(context: Context, message: String) {
 }
 
 @Composable
-fun IconPicker(isError: Boolean, unit: String){
-    if(isError){
+fun IconPicker(isError: Boolean, unit: String) {
+    if (isError) {
         Icon(imageVector = Icons.Filled.Warning, contentDescription = null)
     } else {
         Text(text = unit)
@@ -923,8 +1012,8 @@ fun IconPicker(isError: Boolean, unit: String){
 
 
 @Composable
-fun ErrorHint(isError: Boolean){
-    if(isError){
+fun ErrorHint(isError: Boolean) {
+    if (isError) {
         Text(text = stringResource(R.string.error))
     }
 }
