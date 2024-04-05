@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Assesment 1</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="title_app">Mini Bank</string>
+    <string name="error_same_name">Recipient username cannot be the same</string>
+    <string name="error_less">Insufficient balance</string>
+    <string name="kembali">Back</string>
+    <string name="username_notfound">Username not found</string>
+    <string name="in">In : %1$s</string>
+    <string name="out">Out : %1$s</string>
+    <string name="convert">Conversion result : %1$s</string>
+    <string name="share_result">%1$s converted to %2$s\nConversion result : %3$s</string>
+    <string name="id_profile">ID: %1$S</string>
+    <string name="username_profile">Username: %1$S</string>
+    <string name="currency_profile">Currency: %1$S</string>
+    <string name="foto_profik">Profile Photo</string>
+    <string name="about_app">About Mini Bank</string>
+    <string name="about_app_detail">The Mini Bank application that I created for the mini project assessment 1 Mobpro 1 makes it easier for users to conduct financial transactions. Users can transfer funds domestically and internationally without worrying about currency conversion. This application supports USD, EUR, GBP, and IDR, allowing transactions according to users\' needs. There is also a Money Convert feature to calculate real-time exchange rates. Transaction history only shows deposit/withdrawal signs and amounts, providing a clear summary of financial activities.
+© 2024 Ramadhan Abdul Aziz 6706223026. D3IF 46 04.</string>
+    <string name="username_login">username</string>
+    <string name="password_login">Password</string>
+    <string name="amount">amount</string>
+    <string name="loan">Loan</string>
+    <string name="transfer">Transfer</string>
+    <string name="logo">Logo</string>
+    <string name="current_balance">Current balance</string>
+    <string name="make_transaction">Make Transaction</string>
+    <string name="money_conversion">Money Conversion</string>
+    <string name="request_loan">Request Loan</string>
+    <string name="transfer_money">Transfer Money</string>
+    <string name="withdrawal">WITHDRAWAL</string>
+    <string name="deposit">DEPOSIT</string>
+    <string name="error">Cannot be Empty</string>
+    <string name="berhasil_login_halo">Login Successful, Hello %1$s</string>
+    <string name="username_atau_password_salah">Incorrect username or password</string>
+    <string name="berhasil_melakukan_logout">Successfully logged out</string>
+</resources>
