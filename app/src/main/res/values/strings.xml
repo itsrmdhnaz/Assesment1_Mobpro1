@@ -1,40 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Assesment 1</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
-    <string name="login">Login</string>
-    <string name="title_app">Mini Bank</string>
-    <string name="error_same_name">Username penerima tidak boleh sama</string>
-    <string name="error_less">Saldo tidak mencukupi</string>
-    <string name="kembali">Kembali</string>
-    <string name="username_notfound">Username tidak ditemukan</string>
-    <string name="in">In : %1$s</string>
-    <string name="out">Out : %1$s</string>
-    <string name="convert">Conversion result : %1$s</string>
-    <string name="share_result">%1$s conversion to %2$s\nConversion result : %3$s</string>
-    <string name="id_profile">ID: %1$S</string>
-    <string name="username_profile">Username: %1$S</string>
-    <string name="currency_profile">Currency:  %1$S</string>
-    <string name="foto_profik">Foto Profik</string>
-    <string name="about_app">About Mini Bank</string>
-    <string name="about_app_detail">Aplikasi Mini Bank yang saya buat untuk tugas mini project assesment 1 Mobpro 1 mempermudah pengguna dalam melakukan transaksi keuangan. Pengguna dapat transfer dana dalam dan luar negeri tanpa khawatir konversi mata uang. Aplikasi ini mendukung USD, EUR, GBP, dan IDR, memungkinkan transaksi sesuai kebutuhan pengguna. Terdapat fitur Money Convert untuk menghitung nilai tukar real-time. Riwayat transaksi hanya menampilkan tanda deposit/withdrawal dan jumlah, memberikan ringkasan jelas aktivitas keuangan.
+    <string name="title_app">MovieMemo</string>
+    <string name="foto_profil">Foto Profil</string>
+    <string name="about_app">About MovieMemo</string>
+    <string name="back">Back</string>
+    <string name="about_app_detail">MovieMemo adalah aplikasi yang memungkinkan pengguna untuk menjelajahi dan mengelola koleksi film dengan mudah. Dengan MovieMemo, pengguna dapat menemukan berbagai judul film, melihat detailnya, dan menyimpan film-film yang ingin mereka tonton atau yang sudah mereka tonton sebelumnya. Fitur utama aplikasi ini mencakup penyimpanan detail film seperti judul, gambar poster, tahun rilis, durasi, genre, sutradara, dan ulasan, serta kemampuan untuk menandai film yang sedang ditonton. MovieMemo juga menyediakan riwayat aktivitas pengguna, termasuk daftar film yang telah ditambahkan atau ditonton sebelumnya. Dengan MovieMemo, pengguna dapat dengan mudah menjelajahi dan mengelola koleksi film favorit mereka.
 © 2024 Ramadhan Abdul Aziz 6706223026. D3IF 46 04.</string>
-    <string name="username_login">username</string>
-    <string name="password_login">Password</string>
-    <string name="amount">amount</string>
-    <string name="loan">Loan</string>
-    <string name="transfer">Transfer</string>
-    <string name="logo">Logo</string>
-    <string name="current_balance">Current balance</string>
-    <string name="make_transaction">Make Transaction</string>
-    <string name="money_conversion">Money Conversion</string>
-    <string name="request_loan">Request Loan</string>
-    <string name="transfer_money">Transfer Money</string>
-    <string name="withdrawal">WITHDRAWAL</string>
-    <string name="deposit">DEPOSIT</string>
-    <string name="error">Tidak Boleh Kosong</string>
-    <string name="berhasil_login_halo">Berhasil Login, Halo %1$s</string>
-    <string name="username_atau_password_salah">Username atau password salah</string>
-    <string name="berhasil_melakukan_logout">Berhasil melakukan logout</string>
 </resources>
