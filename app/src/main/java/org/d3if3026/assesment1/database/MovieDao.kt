@@ -19,4 +19,10 @@ interface MovieDao {
     @Query("SELECT * FROM movie ORDER BY releaseDate DESC")
     fun getMovie(): Flow<List<Movie>>
 
+    @Query("SELECT * FROM movie WHERE id = :id")
+    suspend fun getCatatanById(id: Long): Movie?
+
+    @Query("DELETE FROM movie WHERE id = :id")
+    suspend fun deleteById(id: Long)
+
 }

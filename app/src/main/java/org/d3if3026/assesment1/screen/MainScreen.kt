@@ -9,10 +9,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -31,23 +34,28 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.d3if3026.assesment1.R
+import org.d3if3026.assesment1.database.MovieDb
 import org.d3if3026.assesment1.helper.formatDate
 import org.d3if3026.assesment1.model.Movie
 import org.d3if3026.assesment1.navigation.Screen
+import org.d3if3026.assesment1.util.ViewModelFactory
 import java.util.Calendar
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -97,39 +105,11 @@ fun MainScreen(navController: NavHostController) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ScreenContent(modifier: Modifier = Modifier) {
-    val data = listOf(
-        Movie(
-            id = 1,
-            title = "Inception",
-            duration = 148,
-            genre = listOf(200, 1000, 30000),
-            director = "Christopher Nolan",
-            releaseDate = Date(), // Year is 1900-based, so 2010 is represented by 110
-            review = "Inception is a mind-bending thriller that keeps you on the edge of your seat.",
-            isWatching = true
-        ),
-        Movie(
-            id = 1,
-            title = "Inception",
-            duration = 148,
-            genre = listOf(200, 1000, 30000),
-            director = "Christopher Nolan",
-            releaseDate = Date(), // Year is 1900-based, so 2010 is represented by 110
-            review = "Inception is a mind-bending thriller that keeps you on the edge of your seat.",
-            isWatching = true
-        ),
-        Movie(
-            id = 1,
-            title = "Inception",
-            duration = 148,
-            genre = listOf(200, 1000, 30000),
-            director = "Christopher Nolan",
-            releaseDate = Date(), // Year is 1900-based, so 2010 is represented by 110
-            review = "Inception is a mind-bending thriller that keeps you on the edge of your seat.",
-            isWatching = true
-        )
-    )
-
+    val context = LocalContext.current
+    val db = MovieDb.getInstance(context)
+    val factory = ViewModelFactory(db.dao)
+    val viewModel: MainViewModel = viewModel(factory = factory)
+    val data by viewModel.data.collectAsState()
 
     if (data.isEmpty()) {
         Column(
@@ -139,7 +119,13 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = stringResource(id = R.string.empty_list))
+            Image(painter = painterResource(
+                id = R.drawable.movie_removebg_previewcopy),
+                contentDescription = "",
+                modifier = Modifier.aspectRatio(2.5f)
+                )
+            Spacer(modifier = Modifier.size(8.dp))
+            Text(text = stringResource(id = R.string.empty_list), style = MaterialTheme.typography.titleLarge)
         }
     } else {
         LazyVerticalGrid(

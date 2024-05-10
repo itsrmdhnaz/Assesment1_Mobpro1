@@ -2,6 +2,7 @@ package org.d3if3026.assesment1.screen
 
 import android.app.DatePickerDialog
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -91,7 +92,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
     var releaseDate by rememberSaveable { mutableStateOf(currentDate) }
     var review by rememberSaveable { mutableStateOf("") }
     var isWatching by rememberSaveable { mutableStateOf(false) }
-    var direction by rememberSaveable { mutableStateOf("") }
+    var director by rememberSaveable { mutableStateOf("") }
 
     val genreList = listOf(
         R.string.genre_action,
@@ -118,6 +119,8 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
         }
     )
 
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -131,7 +134,11 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                     }
                 },
                 title = {
-                    Text(text = stringResource(id = R.string.add_movie))
+                    if(id == null){
+                        Text(text = stringResource(id = R.string.add_movie))
+                    } else {
+                        Text(text = stringResource(id = R.string.edit_movie))
+                    }
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -139,6 +146,14 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                 ),
                 actions = {
                     IconButton(onClick = {
+
+                        if(title == "" || duration == "" || duration == "0" || director == "" || genre.size == 0){
+                            Toast.makeText(context,
+                                context.getString(R.string.title_duration_director_dan_genre_can_not_be_empty),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+
                         navController.popBackStack()
                     }) {
                         Icon(
@@ -170,8 +185,8 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
             onReleaseDateChange = { releaseDate = it },
             review = review,
             onReviewChange = { review = it },
-            director = direction,
-            onDirectorChange = { direction = it },
+            director = director,
+            onDirectorChange = { director = it },
             isWatching = isWatching,
             onIsWatchingChange = { isWatching = it },
             modifier = Modifier.padding(padding)
@@ -359,6 +374,7 @@ fun FormMovie(
                         context,
                         { _, year, month, dayOfMonth ->
                             val date = GregorianCalendar(year, month, dayOfMonth).time
+
                                 onReleaseDateChange(date)
                                 dateString = formatDate(date)
 

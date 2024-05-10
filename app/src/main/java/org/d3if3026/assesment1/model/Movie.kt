@@ -13,8 +13,8 @@ data class Movie(
     val linkUri: String? = null,
     val duration: Int,
     val genre: List<Int>,
-    val director: String? = "",
+    val director: String? = null,
     val releaseDate: Date,
-    val review: String,
+    val review: String? = null,
     val isWatching: Boolean
 )
