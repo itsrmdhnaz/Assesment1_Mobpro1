@@ -65,12 +65,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import org.d3if3026.assesment1.R
+import org.d3if3026.assesment1.database.MovieDb
 import org.d3if3026.assesment1.helper.formatDate
 import org.d3if3026.assesment1.ui.theme.Assesment1Theme
+import org.d3if3026.assesment1.util.ViewModelFactory
 import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
@@ -78,6 +81,10 @@ import java.util.GregorianCalendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(navController: NavHostController, id: Long? = null) {
+    val context = LocalContext.current
+    val db = MovieDb.getInstance(context)
+    val factory = ViewModelFactory(db.dao)
+    val viewModel: DetailViewModel = viewModel(factory = factory)
 
     val currentDate by remember { mutableStateOf(Date()) }
 
@@ -119,8 +126,6 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
         }
     )
 
-    val context = LocalContext.current
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -152,6 +157,11 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                                 context.getString(R.string.title_duration_director_dan_genre_can_not_be_empty),
                                 Toast.LENGTH_LONG
                             ).show()
+                            return@IconButton
+                        }
+
+                        if(id == null){
+                            viewModel.insert(title, imageUri, linkUri, duration.toInt(), genre, director, releaseDate, review, isWatching)
                         }
 
                         navController.popBackStack()
@@ -416,7 +426,7 @@ fun FormMovie(
             singleLine = true,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Next
             ),
             modifier = Modifier.fillMaxWidth()
         )

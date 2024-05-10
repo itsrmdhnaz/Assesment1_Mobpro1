@@ -16,6 +16,10 @@ class Converters {
 
     @TypeConverter
     fun fromGenreList(genreList: List<Int>): String {
+        val genreListString = mutableListOf<String>()
+        for(genre in genreList){
+            genreListString.add(genre.toString())
+        }
         return genreList.joinToString(",")
     }
 
