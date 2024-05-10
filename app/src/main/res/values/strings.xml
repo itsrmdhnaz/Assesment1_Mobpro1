@@ -35,5 +35,6 @@
     <string name="review">Review</string>
     <string name="director">Director</string>
     <string name="title_duration_director_dan_genre_can_not_be_empty">Title, duration, director, dan genre can not be empty</string>
+    <string name="broken_image">Broken image</string>
 
 </resources>

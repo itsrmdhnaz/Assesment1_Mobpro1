@@ -227,6 +227,8 @@ fun FormMovie(
         )
     }
 
+    var date: Date
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -383,10 +385,10 @@ fun FormMovie(
                     val datePickerDialog = DatePickerDialog(
                         context,
                         { _, year, month, dayOfMonth ->
-                            val date = GregorianCalendar(year, month, dayOfMonth).time
+                            date = GregorianCalendar(year, month, dayOfMonth).time
 
-                                onReleaseDateChange(date)
-                                dateString = formatDate(date)
+                            onReleaseDateChange(date)
+                            dateString = formatDate(date)
 
                         },
                         calendar.get(Calendar.YEAR),

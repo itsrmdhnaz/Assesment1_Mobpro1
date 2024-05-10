@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -49,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import org.d3if3026.assesment1.R
 import org.d3if3026.assesment1.database.MovieDb
 import org.d3if3026.assesment1.helper.formatDate
@@ -161,15 +163,26 @@ fun ListItem(movie: Movie, onClick: () -> Unit) {
          * Poster movie
          */
         Box {
-            Image(
-                painter = painterResource(id = R.drawable.dsc_2305_2_copy),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-            )
+            if (movie.imageUri != "") {
+                AsyncImage(
+                    model = movie.imageUri,
+                    contentDescription = movie.title,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .height(200.dp)
+                        .fillMaxWidth()
+                )
+            } else {
+                Image(
+                    painter = painterResource(id = R.drawable.broken_img),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
         }
+
+        if(movie.imageUri == "") Divider()
 
         Column(
             modifier = Modifier.padding(8.dp),
@@ -179,14 +192,14 @@ fun ListItem(movie: Movie, onClick: () -> Unit) {
                 text = "${movie.title} $releaseYear",
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.labelLarge,
+                style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 text = formatDate(movie.releaseDate),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.labelSmall,
+                style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.Normal
             )
         }
