@@ -7,4 +7,7 @@
     <string name="back">Back</string>
     <string name="about_app_detail">MovieMemo adalah aplikasi yang memungkinkan pengguna untuk menjelajahi dan mengelola koleksi film dengan mudah. Dengan MovieMemo, pengguna dapat menemukan berbagai judul film, melihat detailnya, dan menyimpan film-film yang ingin mereka tonton atau yang sudah mereka tonton sebelumnya. Fitur utama aplikasi ini mencakup penyimpanan detail film seperti judul, gambar poster, tahun rilis, durasi, genre, sutradara, dan ulasan, serta kemampuan untuk menandai film yang sedang ditonton. MovieMemo juga menyediakan riwayat aktivitas pengguna, termasuk daftar film yang telah ditambahkan atau ditonton sebelumnya. Dengan MovieMemo, pengguna dapat dengan mudah menjelajahi dan mengelola koleksi film favorit mereka.
 © 2024 Ramadhan Abdul Aziz 6706223026. D3IF 46 04.</string>
+    <string name="add_movie">Add movie</string>
+    <string name="save">Save</string>
+    <string name="empty_list">Movie list empty</string>
 </resources>
