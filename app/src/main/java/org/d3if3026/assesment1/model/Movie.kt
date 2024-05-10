@@ -8,7 +8,7 @@ data class Movie(
     val imageUri: String? = null,
     val linkUri: String? = null,
     val duration: Int,
-    val genre: List<String>,
+    val genre: List<Int >,
     val director: String? = "",
     val releaseDate: Date,
     val review: String,

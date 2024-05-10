@@ -21,7 +21,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -103,7 +102,7 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             id = 1,
             title = "Inception",
             duration = 148,
-            genre = listOf("Action", "Adventure", "Sci-Fi"),
+            genre = listOf(200, 1000, 30000),
             director = "Christopher Nolan",
             releaseDate = Date(), // Year is 1900-based, so 2010 is represented by 110
             review = "Inception is a mind-bending thriller that keeps you on the edge of your seat.",
@@ -113,7 +112,7 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             id = 1,
             title = "Inception",
             duration = 148,
-            genre = listOf("Action", "Adventure", "Sci-Fi"),
+            genre = listOf(200, 1000, 30000),
             director = "Christopher Nolan",
             releaseDate = Date(), // Year is 1900-based, so 2010 is represented by 110
             review = "Inception is a mind-bending thriller that keeps you on the edge of your seat.",
@@ -123,7 +122,7 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             id = 1,
             title = "Inception",
             duration = 148,
-            genre = listOf("Action", "Adventure", "Sci-Fi"),
+            genre = listOf(200, 1000, 30000),
             director = "Christopher Nolan",
             releaseDate = Date(), // Year is 1900-based, so 2010 is represented by 110
             review = "Inception is a mind-bending thriller that keeps you on the edge of your seat.",
