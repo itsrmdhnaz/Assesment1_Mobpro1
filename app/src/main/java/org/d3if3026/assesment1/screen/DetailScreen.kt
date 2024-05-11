@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -40,6 +41,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -317,6 +319,14 @@ fun FormMovie(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Next
             ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -341,11 +351,20 @@ fun FormMovie(
                     }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
             },
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -357,6 +376,14 @@ fun FormMovie(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Next
+            ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
             ),
             modifier = Modifier.fillMaxWidth()
         )
@@ -370,6 +397,10 @@ fun FormMovie(
             OutlinedButton(modifier = Modifier
                 .fillMaxWidth(),
                 shape = RoundedCornerShape(4.dp),
+                colors = ButtonDefaults.buttonColors(
+                     contentColor = MaterialTheme.colorScheme.onPrimary,
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
                 onClick = {
                     val calendar = Calendar.getInstance()
                     val datePickerDialog = DatePickerDialog(
@@ -392,14 +423,14 @@ fun FormMovie(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "Release Date ")
+                    Text(text = stringResource(R.string.release_date))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
                             text = dateString, style = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.Normal
                             )
@@ -419,6 +450,14 @@ fun FormMovie(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Next
             ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -431,6 +470,14 @@ fun FormMovie(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Next
             ),
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+            ),
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -442,7 +489,17 @@ fun FormMovie(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Done
             ),
-            modifier = Modifier.fillMaxWidth().height(200.dp)
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                focusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
         )
     }
 }

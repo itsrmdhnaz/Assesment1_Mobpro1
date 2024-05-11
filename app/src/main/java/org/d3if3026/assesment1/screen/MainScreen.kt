@@ -51,6 +51,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.d3if3026.assesment1.R
 import org.d3if3026.assesment1.database.MovieDb
 import org.d3if3026.assesment1.helper.formatDate
@@ -77,7 +80,9 @@ fun MainScreen(navController: NavHostController, isDark: Boolean, dataStore: Set
                 actions = {
 
                     IconButton(onClick = {
-
+                        CoroutineScope(Dispatchers.IO).launch {
+                            dataStore.saveDarkMode(!isDark)
+                        }
                     }) {
                         Icon(
                             painter = painterResource(
@@ -234,16 +239,6 @@ fun MainScreenPreview() {
     val dataStore = SettingsDataStore(LocalContext.current)
     val isDark by dataStore.darkModeFlow.collectAsState(false)
     MainScreen(navController = rememberNavController(), isDark, dataStore )
-}
-
-private fun shareData(context: Context, message: String) {
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, message)
-    }
-    if (shareIntent.resolveActivity(context.packageManager) != null) {
-        context.startActivity(shareIntent)
-    }
 }
 
 
