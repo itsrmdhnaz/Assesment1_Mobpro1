@@ -104,6 +104,8 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
     var review by rememberSaveable { mutableStateOf("") }
     var isWatching by rememberSaveable { mutableStateOf(false) }
     var director by rememberSaveable { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
+
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -172,6 +174,17 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                             contentDescription = stringResource(R.string.save),
                             tint = MaterialTheme.colorScheme.primary
                         )
+                    }
+
+                    if (id != null) {
+                        DeleteAction { showDialog = true }
+                        DisplayAlertDialog(
+                            openDialog = showDialog,
+                            onDismissRequest = { showDialog = false }) {
+                            showDialog = false
+                            viewModel.delete(id)
+                            navController.popBackStack()
+                        }
                     }
                 }
             )
@@ -450,7 +463,7 @@ fun DeleteAction(delete: () -> Unit) {
         ) {
             DropdownMenuItem(
                 text = {
-                    Text(text = stringResource(id = R.string.delete))
+                    Text(text = stringResource(id = R.string.delete_movie))
                 },
                 onClick = {
                     expanded = false

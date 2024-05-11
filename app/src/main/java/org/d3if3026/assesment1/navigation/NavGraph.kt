@@ -13,19 +13,22 @@ import org.d3if3026.assesment1.screen.AboutScreen
 import org.d3if3026.assesment1.screen.DetailScreen
 import org.d3if3026.assesment1.screen.KEY_ID_MOVIE
 import org.d3if3026.assesment1.screen.MainScreen
+import org.d3if3026.assesment1.util.SettingsDataStore
 
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SetupNavGraph(
     navController: NavHostController = rememberNavController(),
+    isDark: Boolean,
+    dataStore: SettingsDataStore
 ) {
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route
     ) {
         composable(route = Screen.Home.route) {
-            MainScreen(navController)
+            MainScreen(navController, isDark, dataStore)
         }
         composable(route = Screen.About.route) {
             AboutScreen(navController)

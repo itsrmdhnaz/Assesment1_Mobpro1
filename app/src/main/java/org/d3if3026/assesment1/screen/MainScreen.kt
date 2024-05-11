@@ -56,13 +56,14 @@ import org.d3if3026.assesment1.database.MovieDb
 import org.d3if3026.assesment1.helper.formatDate
 import org.d3if3026.assesment1.model.Movie
 import org.d3if3026.assesment1.navigation.Screen
+import org.d3if3026.assesment1.util.SettingsDataStore
 import org.d3if3026.assesment1.util.ViewModelFactory
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainScreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController, isDark: Boolean, dataStore: SettingsDataStore) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -74,6 +75,23 @@ fun MainScreen(navController: NavHostController) {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 actions = {
+
+                    IconButton(onClick = {
+
+                    }) {
+                        Icon(
+                            painter = painterResource(
+                                if (isDark) R.drawable.baseline_light_mode_24
+                                else R.drawable.baseline_dark_mode_24
+                            ),
+                            contentDescription = stringResource(
+                                if (isDark) R.string.light
+                                else R.string.dark
+                            ),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
                     IconButton(onClick = {
                         navController.navigate(Screen.About.route)
                     }) {
@@ -213,7 +231,9 @@ fun ListItem(movie: Movie, onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen(navController = rememberNavController())
+    val dataStore = SettingsDataStore(LocalContext.current)
+    val isDark by dataStore.darkModeFlow.collectAsState(false)
+    MainScreen(navController = rememberNavController(), isDark, dataStore )
 }
 
 private fun shareData(context: Context, message: String) {
