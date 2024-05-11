@@ -160,7 +160,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                         if (title == "" || duration == "" || duration == "0" || genre == "") {
                             Toast.makeText(
                                 context,
-                                context.getString(R.string.title_duration_director_dan_genre_can_not_be_empty),
+                                context.getString(R.string.can_not_be_empty),
                                 Toast.LENGTH_LONG
                             ).show()
                             return@IconButton

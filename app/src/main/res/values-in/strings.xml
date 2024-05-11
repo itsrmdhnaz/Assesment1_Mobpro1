@@ -39,7 +39,7 @@
     <string name="review">Ulasan</string>
     <string name="director">Sutradara</string>
     <string name="genre">Genre</string>
-    <string name="title_duration_director_dan_genre_can_not_be_empty">Judul, durasi, sutradara, dan genre tidak boleh kosong</string>
+    <string name="can_not_be_empty">Judul, durasi, dan genre tidak boleh kosong</string>
     <string name="broken_image">Gambar rusak</string>
     <string name="release_date">Tanggal Rilis</string>
 </resources>
