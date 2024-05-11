@@ -12,7 +12,7 @@ data class Movie(
     val imageUri: String? = null,
     val linkUri: String? = null,
     val duration: Int,
-    val genre: List<Int>? = null,
+    val genre: String,
     val director: String? = null,
     val releaseDate: Date,
     val review: String? = null,

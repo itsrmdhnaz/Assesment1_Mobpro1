@@ -1,13 +1,14 @@
 package org.d3if3026.assesment1.screen
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,9 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -29,10 +27,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -42,9 +43,11 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,6 +81,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.GregorianCalendar
 
+const val KEY_ID_MOVIE = "idMovie"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(navController: NavHostController, id: Long? = null) {
@@ -95,29 +99,11 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
     var imageUri by rememberSaveable { mutableStateOf("") }
     var linkUri by rememberSaveable { mutableStateOf("") }
     var duration by rememberSaveable { mutableStateOf("") }
-    val genre by rememberSaveable { mutableStateOf(mutableListOf<Int>()) }
+    var genre by rememberSaveable { mutableStateOf("") }
     var releaseDate by rememberSaveable { mutableStateOf(currentDate) }
     var review by rememberSaveable { mutableStateOf("") }
     var isWatching by rememberSaveable { mutableStateOf(false) }
     var director by rememberSaveable { mutableStateOf("") }
-
-    val genreList = listOf(
-        R.string.genre_action,
-        R.string.genre_adventure,
-        R.string.genre_animation,
-        R.string.genre_comedy,
-        R.string.genre_crime,
-        R.string.genre_documentary,
-        R.string.genre_drama,
-        R.string.genre_family,
-        R.string.genre_fantasy,
-        R.string.genre_horror,
-        R.string.genre_mystery,
-        R.string.genre_romance,
-        R.string.genre_scifi,
-        R.string.genre_thriller
-    )
-
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
@@ -125,6 +111,19 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
             imageUri = uri?.toString() ?: ""
         }
     )
+
+    LaunchedEffect(true) {
+        if (id == null) return@LaunchedEffect
+        val data = viewModel.getMovie(id) ?: return@LaunchedEffect
+        title = data.title
+        linkUri = data.linkUri.toString()
+        duration = data.duration.toString()
+        genre = data.genre
+        releaseDate = data.releaseDate
+        director = data.director.toString()
+        review = data.review.toString()
+        isWatching = data.isWatching
+    }
 
     Scaffold(
         topBar = {
@@ -152,7 +151,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                 actions = {
                     IconButton(onClick = {
 
-                        if(title == "" || duration == "" || duration == "0" || director == "" || genre.size == 0){
+                        if(title == "" || duration == "" || duration == "0" || genre == ""){
                             Toast.makeText(context,
                                 context.getString(R.string.title_duration_director_dan_genre_can_not_be_empty),
                                 Toast.LENGTH_LONG
@@ -162,6 +161,8 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
 
                         if(id == null){
                             viewModel.insert(title, imageUri, linkUri, duration.toInt(), genre, director, releaseDate, review, isWatching)
+                        } else {
+                            viewModel.update(id, title, imageUri, linkUri, duration.toInt(), genre, director, releaseDate, review, isWatching)
                         }
 
                         navController.popBackStack()
@@ -190,7 +191,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
             duration = duration,
             onDurationChange = { duration = it },
             genre = genre,
-            genreList = genreList,
+            onGenreChange = { genre = it },
             releaseDate = releaseDate,
             onReleaseDateChange = { releaseDate = it },
             review = review,
@@ -211,13 +212,12 @@ fun FormMovie(
     imageUri: String, onimageUriChange: () -> Unit,
     linkUri: String, onLinkUriChange: (String) -> Unit,
     duration: String, onDurationChange: (String) -> Unit,
-    genreList: List<Int>,
-    genre: MutableList<Int>,
+    genre: String, onGenreChange: (String) -> Unit,
     releaseDate: Date, onReleaseDateChange: (Date) -> Unit,
     director: String, onDirectorChange: (String) -> Unit,
     review: String, onReviewChange: (String) -> Unit,
     isWatching: Boolean, onIsWatchingChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -317,7 +317,15 @@ fun FormMovie(
             ),
             trailingIcon = {
                 if (linkUri != "") {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+
+                        val urlIntent = Intent(
+                            Intent.ACTION_VIEW,
+                          if(linkUri.startsWith("https://")) Uri.parse("https://$linkUri") else Uri.parse("https://www.google.com/search?q=$linkUri")
+                        )
+
+                        context.startActivity(urlIntent)
+                    }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                             contentDescription = ""
@@ -339,37 +347,6 @@ fun FormMovie(
             ),
             modifier = Modifier.fillMaxWidth()
         )
-
-        Text(
-            text = stringResource(R.string.choose_genre_movie),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = Modifier
-                .height(123.dp)
-                .border(2.dp, MaterialTheme.colorScheme.primary)
-        ) {
-            items(genreList) { genreId ->
-                var isChecked by rememberSaveable { mutableStateOf(genre.contains(genreId)) }
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Checkbox(
-                        checked = isChecked,
-                        onCheckedChange = {
-                            isChecked = it
-                            if (it) {
-                                genre.add(genreId)
-                            } else {
-                                genre.remove(genreId)
-                            }
-                        })
-                    Text(text = stringResource(id = genreId))
-                }
-            }
-        }
 
         Row(
             modifier = Modifier
@@ -420,6 +397,17 @@ fun FormMovie(
             }
         }
 
+        OutlinedTextField(
+            value = genre,
+            onValueChange = { onGenreChange(it) },
+            label = { Text(text = stringResource(R.string.genre)) },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                capitalization = KeyboardCapitalization.Words,
+                imeAction = ImeAction.Next
+            ),
+            modifier = Modifier.fillMaxWidth()
+        )
 
         OutlinedTextField(
             value = director,
@@ -437,15 +425,66 @@ fun FormMovie(
             value = review,
             onValueChange = { onReviewChange(it) },
             label = { Text(text = stringResource(R.string.review)) },
-            singleLine = true,
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Words,
                 imeAction = ImeAction.Done
             ),
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(200.dp)
         )
     }
 }
+
+@Composable
+fun DeleteAction(delete: () -> Unit) {
+    var expanded by remember { mutableStateOf(false) }
+
+    IconButton(onClick = { expanded = true }) {
+        Icon(
+            imageVector = Icons.Filled.MoreVert,
+            contentDescription = stringResource(R.string.other),
+            tint = MaterialTheme.colorScheme.primary
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(text = stringResource(id = R.string.delete))
+                },
+                onClick = {
+                    expanded = false
+                    delete()
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun DisplayAlertDialog(
+    openDialog: Boolean,
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit
+) {
+    if (openDialog) {
+        AlertDialog(
+            text = { Text(text = stringResource(R.string.delete_movie)) },
+            confirmButton = {
+                TextButton(onClick = { onConfirmation() }) {
+                    Text(text = stringResource(R.string.button_delete))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { onDismissRequest() }) {
+                    Text(text = stringResource(R.string.button_cancel))
+                }
+            },
+            onDismissRequest = { onDismissRequest() }
+        )
+    }
+}
+
 
 
 @Preview(showBackground = true)

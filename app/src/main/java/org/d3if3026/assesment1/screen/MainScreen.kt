@@ -100,13 +100,13 @@ fun MainScreen(navController: NavHostController) {
             }
         }
     ) { padding ->
-        ScreenContent(Modifier.padding(padding))
+        ScreenContent(Modifier.padding(padding), navController)
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ScreenContent(modifier: Modifier = Modifier) {
+fun ScreenContent(modifier: Modifier = Modifier, navController: NavHostController) {
     val context = LocalContext.current
     val db = MovieDb.getInstance(context)
     val factory = ViewModelFactory(db.dao)
@@ -135,7 +135,9 @@ fun ScreenContent(modifier: Modifier = Modifier) {
             modifier = modifier.fillMaxSize(),
         ) {
             items(data) {
-                ListItem(movie = it) {}
+                ListItem(movie = it) {
+                    navController.navigate(Screen.FormUbah.withId(it.id))
+                }
             }
         }
     }
