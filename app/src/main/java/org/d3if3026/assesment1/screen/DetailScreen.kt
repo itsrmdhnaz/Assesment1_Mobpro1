@@ -128,6 +128,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
         director = data.director.toString()
         review = data.review.toString()
         isWatching = data.isWatching
+        imageUri = data.imageUri.toString()
     }
 
     Scaffold(

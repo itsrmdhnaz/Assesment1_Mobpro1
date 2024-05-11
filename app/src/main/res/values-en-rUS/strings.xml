@@ -5,7 +5,7 @@
     <string name="foto_profil">Foto Profil</string>
     <string name="about_app">About MovieMemo</string>
     <string name="back">Back</string>
-    <string name="about_app_detail">MovieMemo is an application that allows users to easily explore and manage their movie collections. With MovieMemo, users can find various movie titles, view their details, and save movies they want to watch or have watched before. The app\'s key features include storing movie details such as title, poster image, release year, duration, genre, director, and reviews, as well as the ability to bookmark the movie you're watching. MovieMemo also provides a history of user activity, including a list of films that have been added or previously watched. With MovieMemo, users can easily explore and manage their favorite movie collections.
+    <string name="about_app_detail">MovieMemo is an application that allows users to easily explore and manage their movie collections. With MovieMemo, users can find various movie titles, view their details, and save movies they want to watch or have watched before. The app\'s key features include storing movie details such as title, poster image, release year, duration, genre, director, and reviews, as well as the ability to bookmark the movie you\'re watching. MovieMemo also provides a history of user activity, including a list of films that have been added or previously watched. With MovieMemo, users can easily explore and manage their favorite movie collections.
 © 2024 Ramadhan Abdul Aziz 6706223026. D3IF 46 04.</string>
     <string name="add_movie">Add movie</string>
     <string name="edit_movie">Edit movie</string>
