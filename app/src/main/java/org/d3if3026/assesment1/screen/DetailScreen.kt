@@ -84,6 +84,7 @@ import java.util.Date
 import java.util.GregorianCalendar
 
 const val KEY_ID_MOVIE = "idMovie"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(navController: NavHostController, id: Long? = null) {
@@ -142,7 +143,7 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                     }
                 },
                 title = {
-                    if(id == null){
+                    if (id == null) {
                         Text(text = stringResource(id = R.string.add_movie))
                     } else {
                         Text(text = stringResource(id = R.string.edit_movie))
@@ -155,18 +156,40 @@ fun DetailScreen(navController: NavHostController, id: Long? = null) {
                 actions = {
                     IconButton(onClick = {
 
-                        if(title == "" || duration == "" || duration == "0" || genre == ""){
-                            Toast.makeText(context,
+                        if (title == "" || duration == "" || duration == "0" || genre == "") {
+                            Toast.makeText(
+                                context,
                                 context.getString(R.string.title_duration_director_dan_genre_can_not_be_empty),
                                 Toast.LENGTH_LONG
                             ).show()
                             return@IconButton
                         }
 
-                        if(id == null){
-                            viewModel.insert(title, imageUri, linkUri, duration.toInt(), genre, director, releaseDate, review, isWatching)
+                        if (id == null) {
+                            viewModel.insert(
+                                title,
+                                imageUri,
+                                linkUri,
+                                duration.toInt(),
+                                genre,
+                                director,
+                                releaseDate,
+                                review,
+                                isWatching
+                            )
                         } else {
-                            viewModel.update(id, title, imageUri, linkUri, duration.toInt(), genre, director, releaseDate, review, isWatching)
+                            viewModel.update(
+                                id,
+                                title,
+                                imageUri,
+                                linkUri,
+                                duration.toInt(),
+                                genre,
+                                director,
+                                releaseDate,
+                                review,
+                                isWatching
+                            )
                         }
 
                         navController.popBackStack()
@@ -344,7 +367,9 @@ fun FormMovie(
 
                         val urlIntent = Intent(
                             Intent.ACTION_VIEW,
-                          if(linkUri.startsWith("https://")) Uri.parse("https://$linkUri") else Uri.parse("https://www.google.com/search?q=$linkUri")
+                            if (linkUri.startsWith("https://")) Uri.parse("https://$linkUri") else Uri.parse(
+                                "https://www.google.com/search?q=$linkUri"
+                            )
                         )
 
                         context.startActivity(urlIntent)
@@ -398,7 +423,7 @@ fun FormMovie(
                 .fillMaxWidth(),
                 shape = RoundedCornerShape(4.dp),
                 colors = ButtonDefaults.buttonColors(
-                     contentColor = MaterialTheme.colorScheme.onPrimary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 onClick = {
@@ -554,7 +579,6 @@ fun DisplayAlertDialog(
         )
     }
 }
-
 
 
 @Preview(showBackground = true)

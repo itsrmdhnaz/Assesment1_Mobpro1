@@ -5,7 +5,7 @@
     <string name="foto_profil">Foto Profil</string>
     <string name="about_app">About MovieMemo</string>
     <string name="back">Back</string>
-    <string name="about_app_detail">MovieMemo adalah aplikasi yang memungkinkan pengguna untuk menjelajahi dan mengelola koleksi film dengan mudah. Dengan MovieMemo, pengguna dapat menemukan berbagai judul film, melihat detailnya, dan menyimpan film-film yang ingin mereka tonton atau yang sudah mereka tonton sebelumnya. Fitur utama aplikasi ini mencakup penyimpanan detail film seperti judul, gambar poster, tahun rilis, durasi, genre, sutradara, dan ulasan, serta kemampuan untuk menandai film yang sedang ditonton. MovieMemo juga menyediakan riwayat aktivitas pengguna, termasuk daftar film yang telah ditambahkan atau ditonton sebelumnya. Dengan MovieMemo, pengguna dapat dengan mudah menjelajahi dan mengelola koleksi film favorit mereka.
+    <string name="about_app_detail">MovieMemo is an application that allows users to easily explore and manage their movie collections. With MovieMemo, users can find various movie titles, view their details, and save movies they want to watch or have watched before. The app\'s key features include storing movie details such as title, poster image, release year, duration, genre, director, and reviews, as well as the ability to bookmark the movie you\'re watching. MovieMemo also provides a history of user activity, including a list of films that have been added or previously watched. With MovieMemo, users can easily explore and manage their favorite movie collections.
 © 2024 Ramadhan Abdul Aziz 6706223026. D3IF 46 04.</string>
     <string name="add_movie">Add movie</string>
     <string name="edit_movie">Edit movie</string>
@@ -21,21 +21,20 @@
     <string name="minute">Duration (minute)</string>
     <string name="light">Light</string>
     <string name="dark">Dark</string>
-
-        <string name="genre_action">Action</string>
-        <string name="genre_adventure">Adventure</string>
-        <string name="genre_animation">Animation</string>
-        <string name="genre_comedy">Comedy</string>
-        <string name="genre_crime">Crime</string>
-        <string name="genre_documentary">Documentary</string>
-        <string name="genre_drama">Drama</string>
-        <string name="genre_family">Family</string>
-        <string name="genre_fantasy">Fantasy</string>
-        <string name="genre_horror">Horror</string>
-        <string name="genre_mystery">Mystery</string>
-        <string name="genre_romance">Romance</string>
-        <string name="genre_scifi">Sci-Fi</string>
-        <string name="genre_thriller">Thriller</string>
+    <string name="genre_action">Action</string>
+    <string name="genre_adventure">Adventure</string>
+    <string name="genre_animation">Animation</string>
+    <string name="genre_comedy">Comedy</string>
+    <string name="genre_crime">Crime</string>
+    <string name="genre_documentary">Documentary</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_family">Family</string>
+    <string name="genre_fantasy">Fantasy</string>
+    <string name="genre_horror">Horror</string>
+    <string name="genre_mystery">Mystery</string>
+    <string name="genre_romance">Romance</string>
+    <string name="genre_scifi">Sci-Fi</string>
+    <string name="genre_thriller">Thriller</string>
     <string name="choose_genre_movie">Choose Genre Movie</string>
     <string name="review">Review</string>
     <string name="director">Director</string>
@@ -43,5 +42,4 @@
     <string name="title_duration_director_dan_genre_can_not_be_empty">Title, duration, director, dan genre can not be empty</string>
     <string name="broken_image">Broken image</string>
     <string name="release_date">Release Date</string>
-
 </resources>

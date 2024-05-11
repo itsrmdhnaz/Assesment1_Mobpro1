@@ -1,4 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">Assesment 1</string>
+    <string name="title_app">MovieMemo</string>
+    <string name="foto_profil">Foto Profil</string>
+    <string name="about_app">Tentang MovieMemo</string>
+    <string name="back">Kembali</string>
+    <string name="about_app_detail">MovieMemo adalah aplikasi yang memungkinkan pengguna untuk menjelajahi dan mengelola koleksi film dengan mudah. Dengan MovieMemo, pengguna dapat menemukan berbagai judul film, melihat detailnya, dan menyimpan film-film yang ingin mereka tonton atau yang sudah mereka tonton sebelumnya. Fitur utama aplikasi ini mencakup penyimpanan detail film seperti judul, gambar poster, tahun rilis, durasi, genre, sutradara, dan ulasan, serta kemampuan untuk menandai film yang sedang ditonton. MovieMemo juga menyediakan riwayat aktivitas pengguna, termasuk daftar film yang telah ditambahkan atau ditonton sebelumnya. Dengan MovieMemo, pengguna dapat dengan mudah menjelajahi dan mengelola koleksi film favorit mereka.
+© 2024 Ramadhan Abdul Aziz 6706223026. D3IF 46 04.</string>
+    <string name="add_movie">Tambah Film</string>
+    <string name="edit_movie">Edit Film</string>
+    <string name="delete_movie">Hapus film ini?</string>
+    <string name="other">Lainnya</string>
+    <string name="button_delete">Hapus Film</string>
+    <string name="button_cancel">Batal</string>
+    <string name="save">Simpan</string>
+    <string name="empty_list">Daftar film kosong</string>
+    <string name="title">Judul</string>
+    <string name="link_url">URL Tautan</string>
+    <string name="have_you_watched_it">Sudah menonton?</string>
+    <string name="minute">Durasi (menit)</string>
+    <string name="light">Terang</string>
+    <string name="dark">Gelap</string>
+    <string name="genre_action">Aksi</string>
+    <string name="genre_adventure">Petualangan</string>
+    <string name="genre_animation">Animasi</string>
+    <string name="genre_comedy">Komedi</string>
+    <string name="genre_crime">Kejahatan</string>
+    <string name="genre_documentary">Dokumenter</string>
+    <string name="genre_drama">Drama</string>
+    <string name="genre_family">Keluarga</string>
+    <string name="genre_fantasy">Fantasi</string>
+    <string name="genre_horror">Horor</string>
+    <string name="genre_mystery">Misteri</string>
+    <string name="genre_romance">Romantis</string>
+    <string name="genre_scifi">Sains Fiksi</string>
+    <string name="genre_thriller">Thriller</string>
+    <string name="choose_genre_movie">Pilih Genre Film</string>
+    <string name="review">Ulasan</string>
+    <string name="director">Sutradara</string>
+    <string name="genre">Genre</string>
+    <string name="title_duration_director_dan_genre_can_not_be_empty">Judul, durasi, sutradara, dan genre tidak boleh kosong</string>
+    <string name="broken_image">Gambar rusak</string>
+    <string name="release_date">Tanggal Rilis</string>
 </resources>

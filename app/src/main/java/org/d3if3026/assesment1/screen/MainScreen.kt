@@ -1,7 +1,5 @@
 package org.d3if3026.assesment1.screen
 
-import android.content.Context
-import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
@@ -144,13 +142,18 @@ fun ScreenContent(modifier: Modifier = Modifier, navController: NavHostControlle
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(painter = painterResource(
-                id = R.drawable.movie_removebg_previewcopy),
+            Image(
+                painter = painterResource(
+                    id = R.drawable.movie_removebg_previewcopy
+                ),
                 contentDescription = "",
                 modifier = Modifier.aspectRatio(2.5f)
-                )
+            )
             Spacer(modifier = Modifier.size(8.dp))
-            Text(text = stringResource(id = R.string.empty_list), style = MaterialTheme.typography.titleLarge)
+            Text(
+                text = stringResource(id = R.string.empty_list),
+                style = MaterialTheme.typography.titleLarge
+            )
         }
     } else {
         LazyVerticalGrid(
@@ -207,7 +210,7 @@ fun ListItem(movie: Movie, onClick: () -> Unit) {
             }
         }
 
-        if(movie.imageUri == "") Divider()
+        if (movie.imageUri == "") Divider()
 
         Column(
             modifier = Modifier.padding(8.dp),
@@ -238,7 +241,7 @@ fun ListItem(movie: Movie, onClick: () -> Unit) {
 fun MainScreenPreview() {
     val dataStore = SettingsDataStore(LocalContext.current)
     val isDark by dataStore.darkModeFlow.collectAsState(false)
-    MainScreen(navController = rememberNavController(), isDark, dataStore )
+    MainScreen(navController = rememberNavController(), isDark, dataStore)
 }
 
 
