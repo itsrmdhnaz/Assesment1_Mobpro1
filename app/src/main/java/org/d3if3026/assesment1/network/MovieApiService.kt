@@ -45,10 +45,10 @@ interface MovieApiService {
     ): OpStatus
 
     @FormUrlEncoded
-    @POST("deleteArt.php")
+    @POST("deleteMovie.php")
     suspend fun deleteMovie(
         @Header("Authorization") email: String,
-        @Field("id") MovieId: String
+        @Field("id") movieId: String
     ): OpStatus
 }
 
@@ -57,8 +57,7 @@ object MovieApi {
         retrofit.create(MovieApiService::class.java)
     }
 
-    fun getArtUrl(imageId: String): String {
-        return "${BASE_URL}image.php?id=$imageId"
+    fun getMovieUrl(imageId: String): String {
         return "${BASE_URL}image.php?id=$imageId"
     }
 }

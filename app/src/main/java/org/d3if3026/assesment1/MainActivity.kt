@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SetupNavGraph(isDark = isDark, dataStore = dataStore)
+                    SetupNavGraph(isDark = isDark)
                 }
             }
         }

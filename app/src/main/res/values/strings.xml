@@ -10,6 +10,7 @@
     <string name="add_movie">Add movie</string>
     <string name="edit_movie">Edit movie</string>
     <string name="delete_movie">Delete this movie?</string>
+    <string name="movie_empty">Movie list empty</string>
     <string name="can_not_be_empty">Title, duration, and genre can not be empty</string>
     <string name="broken_image">Broken image</string>
     <string name="release_date">Release Date</string>
@@ -24,4 +25,9 @@
     <string name="nama_latin">Nama latin</string>
     <string name="batal">Batal</string>
     <string name="hapus">Hapus</string>
+    <string name="simpan">Save</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="title">Title</string>
+    <string name="genre">Genre</string>
 </resources>

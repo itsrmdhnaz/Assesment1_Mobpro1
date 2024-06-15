@@ -1,23 +1,459 @@
 package org.d3if3026.assesment1.screen
 
+import android.content.ContentResolver
+import android.content.Context
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.os.Build
-import androidx.annotation.RequiresApi
+import android.provider.MediaStore
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.unit.dp
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.exceptions.ClearCredentialException
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.d3if3026.assesment1.BuildConfig
+import org.d3if3026.assesment1.R
+import org.d3if3026.assesment1.model.Movie
+import org.d3if3026.assesment1.model.User
+import org.d3if3026.assesment1.navigation.Screen
+import org.d3if3026.assesment1.network.ApiStatus
+import org.d3if3026.assesment1.network.MovieApi
+import org.d3if3026.assesment1.network.UserDataStore
 import org.d3if3026.assesment1.util.SettingsDataStore
 
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenPreview() {
-    val dataStore = SettingsDataStore(LocalContext.current)
-    val isDark by dataStore.darkModeFlow.collectAsState(false)
-//    MainScreen(navController = rememberNavController(), isDark, dataStore)
+fun MainScreen(navController: NavHostController, isDark: Boolean) {
+    val context = LocalContext.current
+    val dataStore = UserDataStore(context)
+    val themeStore = SettingsDataStore(context)
+    val user by dataStore.userFlow.collectAsState(User())
+
+    val viewModel: MainViewModel = viewModel()
+    val errorMessage by viewModel.errorMessage
+
+    var showDialog by remember { mutableStateOf(false) }
+    var showMovieDialog by remember { mutableStateOf(false) }
+    var deleteMovieDialog by remember { mutableStateOf(false) }
+    var movie by remember { mutableStateOf(Movie("", "", "", "", "")) }
+
+    var bitmap: Bitmap? by remember { mutableStateOf(null) }
+    val launcher = rememberLauncherForActivityResult(CropImageContract()) {
+        bitmap = getCroppedImage(context.contentResolver, it)
+        if (bitmap != null) showMovieDialog = true
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.title_app))
+                },
+                colors = TopAppBarDefaults.mediumTopAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                ),
+                actions = {
+                    IconButton(onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            themeStore.saveDarkMode(!isDark)
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(
+                                if (isDark) R.drawable.baseline_light_mode_24
+                                else R.drawable.baseline_dark_mode_24
+                            ),
+                            contentDescription = stringResource(
+                                if (isDark) R.string.light
+                                else R.string.dark
+                            ),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    IconButton(onClick = {
+                        navController.navigate(Screen.About.route)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
+                    IconButton(onClick = {
+                        if (user.email.isEmpty()) {
+                            CoroutineScope(Dispatchers.IO).launch { signIn(context, dataStore) }
+                        }
+                        else {
+                            showDialog = true
+                        }
+                    }) {
+                        Icon(
+                            painter = painterResource(R.drawable.account_circle_24),
+                            contentDescription = stringResource(R.string.profil),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                val options = CropImageContractOptions(
+                    null, CropImageOptions(
+                        imageSourceIncludeGallery = false,
+                        imageSourceIncludeCamera = true,
+                        fixAspectRatio = true
+                    )
+                )
+                launcher.launch(options)
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(id = R.string.tambah_movie)
+                )
+            }
+        }
+    ) { padding ->
+        ScreenContent(viewModel, user.email, Modifier.padding(padding), { movie = it }, { deleteMovieDialog = true })
+
+        if (showDialog) {
+            ProfilDialog(
+                user = user,
+                onDismissRequest = { showDialog = false }) {
+                CoroutineScope(Dispatchers.IO).launch { signOut(context, dataStore) }
+                showDialog = false
+            }
+        }
+
+        if (showMovieDialog) {
+            MovieDialog(
+                bitmap = bitmap,
+                onDismissRequest = { showMovieDialog = false }) { judul, movies, jenisKarya ->
+                viewModel.saveData(user.email, judul, movies, jenisKarya, bitmap!!)
+                showMovieDialog = false
+            }
+        }
+
+        if(deleteMovieDialog){
+            DeleteDialog(
+                movie,
+                onDismissRequest = { deleteMovieDialog = false }) {
+                viewModel.deleteData(user.email, movie.id)
+                deleteMovieDialog = false
+            }
+        }
+
+        if (errorMessage != null) {
+            Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
+            viewModel.clearMessage()
+        }
+    }
 }
+
+@Composable
+fun ScreenContent(
+    viewModel: MainViewModel,
+    userId: String,
+    modifier: Modifier,
+    onChangeMovie: (Movie) -> Unit,
+    onChangeDeleteMovieDialog: () -> Unit)
+{
+    val data by viewModel.data
+    val status by viewModel.status.collectAsState()
+
+    LaunchedEffect(userId) {
+        viewModel.retrieveData(userId)
+    }
+
+    when(status) {
+        ApiStatus.LOADING -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        ApiStatus.SUCCESS -> {
+            if(data.size > 0){
+                LazyVerticalGrid(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(4.dp),
+                    columns = GridCells.Fixed(2),
+                    contentPadding = PaddingValues(bottom = 80.dp)
+                ) {
+                    items(data) { Movie ->  ListItem(movie = Movie, { onChangeMovie(Movie) }, {onChangeDeleteMovieDialog() }) }
+                }
+            } else {
+                Column(
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(
+                            id = R.drawable.movie_removebg_previewcopy
+                        ),
+                        contentDescription = "",
+                        modifier = Modifier.aspectRatio(2.5f)
+                    )
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Text(
+                        text = stringResource(R.string.movie_empty),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
+        }
+
+        ApiStatus.FAILED -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = stringResource(id = R.string.error))
+                Button(
+                    onClick = { viewModel.retrieveData(userId) },
+                    modifier = Modifier.padding(top = 16.dp),
+                    contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp)
+                ) {
+                    Text(text = stringResource(id = R.string.try_again))
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ListItem(movie: Movie, onChangeMovie: (Movie) -> Unit, onChangeDeleteMovieDialog: () -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Box {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(MovieApi.getMovieUrl(movie.imageId))
+                    .crossfade(true)
+                    .build(),
+                contentDescription = stringResource(R.string.gambar, movie.title),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.loading_img),
+                error = painterResource(id = R.drawable.broken_img),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
+            )
+        }
+
+        Column(
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column {
+                    Text(
+                        text = movie.title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = movie.genre,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Normal
+                    )
+                    Text(
+                        text = movie.releaseDate,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+                IconButton(onClick = {
+                    onChangeMovie(movie)
+                    onChangeDeleteMovieDialog()
+                }) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = stringResource(R.string.delete_movie),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
+        }
+    }
+}
+
+private suspend fun signIn(context: Context, dataStore: UserDataStore) {
+    val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId(BuildConfig.API_KEY)
+        .build()
+
+    val request: GetCredentialRequest = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOption)
+        .build()
+
+    try {
+        val credentialManager = CredentialManager.create(context)
+        val result = credentialManager.getCredential(context, request)
+        handleSignIn(result, dataStore)
+    } catch (e: GetCredentialException) {
+        Log.e("SIGN-IN", "Error: ${e.errorMessage}")
+    }
+}
+
+private suspend fun handleSignIn(result: GetCredentialResponse, dataStore: UserDataStore) {
+    val credential = result.credential
+    if (credential is CustomCredential &&
+        credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        try {
+            val googleIdToken = GoogleIdTokenCredential.createFrom(credential.data)
+            val nama = googleIdToken.displayName ?: ""
+            val email = googleIdToken.id
+            val photoUrl = googleIdToken.profilePictureUri.toString()
+            dataStore.saveData(User(nama, email, photoUrl))
+            Log.d("SIGN-IN", "User email: ${googleIdToken.id}")
+        } catch (e: GoogleIdTokenParsingException) {
+            Log.e("SIGN-IN", "Error: ${e.message}")
+        }
+    }
+    else {
+        Log.e("SIGN-IN", "Error: unrecognized custom credential type.")
+    }
+}
+
+private suspend fun signOut(context: Context, dataStore: UserDataStore) {
+    try {
+        val credentialManager = CredentialManager.create(context)
+        credentialManager.clearCredentialState(
+            ClearCredentialStateRequest()
+        )
+        dataStore.saveData(User())
+    } catch (e: ClearCredentialException) {
+        Log.e("SIGN-IN", "Error: ${e.errorMessage}")
+    }
+}
+
+private fun getCroppedImage(
+    resolver: ContentResolver,
+    result: CropImageView.CropResult
+): Bitmap? {
+    if (!result.isSuccessful) {
+        Log.e("IMAGE", "Error: ${result.error}")
+        return null
+    }
+
+    val uri = result.uriContent ?: return null
+
+    return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+        MediaStore.Images.Media.getBitmap(resolver, uri)
+    } else {
+        val source = ImageDecoder.createSource(resolver, uri)
+        ImageDecoder.decodeBitmap(source)
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Composable
+fun ScreenPreview() {
+
+}
+
+
+
+
 
 
